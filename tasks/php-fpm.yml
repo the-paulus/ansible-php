@@ -1,0 +1,50 @@
+---
+- name: "Create FPM pool configuration files"
+  file:
+    path: "{{ item[0] }}/{{ item[1].pool_name }}.conf"
+    group: root
+    state: file
+    owner: root
+  with_nested:
+    - "{{ _php_fpm_conf_path[ansible_os_family] }}"
+    - "{{ php_php_fpm_pools }}"
+
+- name: "Update FPM pool configurations"
+  lineinfile:
+    dest: "{{ _php_fpm_conf_path[ansible_os_family] }}/{{ item.pool_name }}.conf"
+    regexp: "'.*{{ item }}.?=.+$'"
+    line: "{{ item }} = {{ item[item] }}"
+  with_items:
+    - "{{ php_php_fpm_pools }}"
+  when: item != "pool_name" or item != "environment" or item != "php_admin_value" or item != "php_value"
+
+- name: "Update FPM pool environment variables"
+  lineinfile:
+    dest: "{{ _php_fpm_conf_path[ansible_os_family] }}/{{ item.pool_name }}.conf"
+    regexp: "'.*ENV[{{ item }}].?=.+$'"
+    line: "ENV[{{ item }}] = {{ item[item] }}"
+  with_items:
+    - "{{ php_php_fpm_pools['env'] }}"
+
+- name: "Update FPM pool environment variables"
+  lineinfile:
+    dest: "{{ _php_fpm_conf_path[ansible_os_family] }}/{{ item.pool_name }}.conf"
+    regexp: "'.*{{ item }}.?=.+$'"
+    line: "{{ item }} = {{ item[item] }}"
+  with_nested:
+    - "{{ 'pool_name'|map('extract', php_php_fpm_pools)|list}}"
+    - "{{ php_php_fpm_pools['env'] }}"
+
+- name: "Update FPM pool environment variables"
+  lineinfile:
+    dest: "{{ _php_fpm_conf_path[ansible_os_family] }}/{{ item.pool_name }}.conf"
+    regexp: "'.*{{ item }}.?=.+$'"
+    line: "{{ item }} = {{ item['php_value'] }}"
+  with_items:
+    - "{{ php_php_fpm_pools['env'] }}"
+
+- name: "Enable PHP-FPM to start on boot"
+  service:
+    name: "{{ _php_fpm_daemon[ansible_os_family] }}"
+    state: started
+    enabled: yes

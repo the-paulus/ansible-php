@@ -2,3 +2,6 @@
 - name: "Include tasks for {{ ansible_os_family }}"
   include_tasks: "{{ ansible_os_family }}/main.yml"
 
+- name: "Include FPM tasks"
+  include_tasks: "php-fpm.yml"
+  when: php_enable_php_fpm
