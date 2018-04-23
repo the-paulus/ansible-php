@@ -1,2 +1,141 @@
 ---
-# vars file for skeleton
+_php_packages:
+  CentOS:
+    - php
+    - php-cli
+    - php-common
+    - php-devel
+    - php-fpm
+    - php-gd
+    - php-imap
+    - php-ldap
+    - php-mbstring
+    - php-opcache
+    - php-pdo
+    - php-pear
+    - php-pecl-apcu
+    - php-xml
+    - php-xmlrpc
+  Debian:
+    - php7.0-common
+    - php7.0-cli
+    - php7.0-dev
+    - php7.0-fpm
+    - libpcre3-dev
+    - php7.0-gd
+    - php7.0-curl
+    - php7.0-imap
+    - php7.0-json
+    - php7.0-opcache
+    - php7.0-xml
+    - php7.0-mbstring
+    - php-sqlite3
+    - php-apcu
+  Gentoo:
+    - acl
+    - bzip2
+    - cli
+    - crypt
+    - ctype
+    - curl
+    - fileinfo
+    - filter
+    - gd
+    - inifile
+    - ipv6
+    - json
+    - mhash
+    - mysql
+    - mysqli
+    - nls
+    - odbc
+    - pcntl
+    - pdo
+    - phar
+    - posix
+    - readline
+    - session
+    - simplexml
+    - spell
+    - ssl
+    - threads
+    - tokenizer
+    - unicode
+    - xml
+    - xmlreader
+    - xmlrpc
+    - xmlwriter
+    - zip
+    - zlib
+  RedHat:
+    - php
+    - php-cli
+    - php-common
+    - php-devel
+    - php-fpm
+    - php-gd
+    - php-imap
+    - php-ldap
+    - php-mbstring
+    - php-opcache
+    - php-pdo
+    - php-pear
+    - php-pecl-apcu
+    - php-xml
+    - php-xmlrpc
+
+_php_webserver_daemon:
+  CentOS: "httpd"
+  Debian: "apache2"
+  Gentoo: "apache2"
+  RedHat: "httpd"
+  Ubuntu: "apache2"
+
+_php_conf_paths:
+  CentOS:
+    - "/etc"
+  Debian:
+    - "/etc/php/7.0/fpm"
+    - "/etc/php/7.0/apache2"
+    - "/etc/php/7.0/cli"
+  Gentoo:
+    - "/etc"
+  RedHat:
+    - "/etc"
+
+_php_extension_conf_paths:
+  CentOS:
+    - "/etc/php.d"
+  Debian:
+    - "/etc/php/7.0/fpm/conf.d"
+    - "/etc/php/7.0/apache2/conf.d"
+    - "/etc/php/7.0/cli/conf.d"
+  Gentoo:
+    - "/etc/php.d"
+  RedHat:
+    - "/etc/php.d"
+
+_php_apc_conf_filename:
+  CentOS: "50-apc.ini"
+  Debian: "20-apcu.ini"
+  RedHat: "50-apc.ini"
+
+_php_opcache_conf_filename: "10-opcache.ini"
+_php_fpm_daemon:
+  CentOS: "php-fpm"
+  Debian: "php{{ php_version }}-fpm"
+  Gentoo: "php-fpm@{{ php_version }}"
+  RedHat: "php-fpm"
+
+_php_fpm_conf_path:
+  CentOS: "/etc/php-fpm.d"
+  Debian: ""
+  Gentoo: ""
+  Redhat: "/etc/php-fpm.d"
+
+_php_fpm_pool_user_group:
+  CentOS: "apache"
+  Debian: "www-data"
+  Gentoo: "apache"
+  RedHat: "apache"
+  Ubuntu: "www-data"
