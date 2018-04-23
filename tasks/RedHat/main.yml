@@ -1,3 +1,41 @@
 ---
+- name: Install yum-utils
+  yum:
+    name: yum-utils
+
+- name: "Use {{ php_repository }} for PHP {{ php_version }}"
+  shell: "yum-config-manager --enable {{ php_repository }}-php{{php_version | regex_replace('\\.', '') }}"
+  when: (php_repository and php_repository != "") and (php_version and php_version != "")
+
 - name: "Include tasks for {{ ansible_os_family }} - {{ ansible_distribution }}"
   include_tasks: "{{ ansible_distribution }}/main.yml"
+
+- name: "Install php packages"
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ php_packages + php_extra_packages }}"
+
+- name: "Ensuring configuration directories exist"
+  file:
+    path: "{{ item }}"
+    state: directory
+    follow: true
+  with_flattened:
+    - "{{ _php_conf_paths[ansible_os_family] }}"
+    - "{{ _php_extension_conf_paths[ansible_os_family] }}"
+
+- name: "Update php.ini file"
+  lineinfile:
+    path: "{{ item[0] }}/php.ini"
+    owner: root
+    regexp: "'*.{{ item[1] }}'"
+    line: "{{ item[1] }} = {{ php_php_ini[item[1]] }}"
+    group: root
+    state: present # Whether the line should be there or not.
+    mode: 0644
+    backup: yes
+  with_nested:
+    - "{{ _php_conf_paths[ansible_os_family] }}"
+    - "{{ php_php_ini }}"
+  notify: "restart {{ _php_webserver_daemon[ansible_os_family] }}"
