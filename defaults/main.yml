@@ -1,2 +1,89 @@
 ---
-# defaults file for skeleton
+php_repository: "remi"
+php_version: "7.0"
+php_webserver: yes
+php_install_recommended: yes
+php_executable: php
+php_packages: "{{ _php_packages[ansible_os_family] }}"
+php_extra_packages: []
+
+php_enable_php_fpm: false
+
+php_php_fpm_pools:
+  - pool_name: "www"
+    user: "apache"
+    group: "apache"
+    listen: "www.sock"
+    listen.owner: "nobody"
+    listen.group: "nobody"
+    listen.mode: "0660"
+    listen.acl_users: "apache"
+    listen.acl_groups: "apache"
+    listen.allowed_clients: "127.0.0.1"
+    pm: "dynamic"
+    pm.max_children: 50
+    pm.start_servers: 5
+    pm.min_spare_servers: 5
+    pm.max_spare_servers: 5
+    slowlog: "/var/log/php-fpm/www-slow.log"
+    env:
+      HOSTNAME: '$HOSTNAME'
+      PATH: '/usr/local/bin:/usr/bin:/bin'
+      TMP: '/tmp'
+      TMPDIR: '/tmp'
+      TEMPDIR: '/tmp'
+    php_admin_value:
+      sendmail_path: "/usr/sbin/sendmail -t -i -f www@my.domain.com"
+      memory_limit: "256M"
+    php_value:
+      session.save_handler: "files"
+      session.save_path: "/var/lib/php/sessions"
+      soap.wsdl_cache_dir: "/var/lib/php/sdlcache"
+
+# OpCache settings.
+php_opcache:
+  zend_extension: "opcache.so"
+  enable_opcache: "1"
+  enable_cli: "0"
+  memory_consumption: "96"
+  interned_strings_buffer: "16"
+  max_accelerated_files: "4096"
+  max_wasted_percentage: "5"
+  validate_timestamps: "1"
+  revalidate_path: "0"
+  revalidate_freq: "2"
+  max_file_size: "0"
+  blacklist_filename: ""
+
+# APCu settings.
+php_apc:
+  enable_apc: true
+  shm_size: "96M"
+  enable_cli: "0"
+
+php_php_ini:
+  expose_php: "On"
+  memory_limit: "256M"
+  max_execution_time: "60"
+  max_input_time: "60"
+  max_input_vars: "1000"
+  realpath_cache_size: "32K"
+  file_uploads: "On"
+  upload_max_filesize: "64M"
+  max_file_uploads: "20"
+  post_max_size: "32M"
+  date_timezone: "America/Chicago"
+  allow_url_fopen: "On"
+  sendmail_path: "/usr/sbin/sendmail -t -i"
+  output_buffering: "4096"
+  short_open_tag: "Off"
+  disable_functions: ""
+  session_cookie_lifetime: 0
+  session_gc_probability: 1
+  session_gc_divisor: 1000
+  session_gc_maxlifetime: 1440
+  session_save_handler: files
+  session_save_path: ''
+  error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
+  display_errors: "Off"
+  display_startup_errors: "Off"
