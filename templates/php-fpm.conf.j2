@@ -1,0 +1,37 @@
+[{{ item.pool_name }}]
+
+{% if item.general is defined %}
+{% for key, val in item.general.items() %}
+{{ key }} = {{ val }}
+{% endfor %}
+{% endif %}
+
+{% if item.env is defined %}
+{% for key, val in item.env.items() %}
+env[{{ key }}] = {{ val }}
+{% endfor %}
+{% endif %}
+
+{% if item.php_flag is defined %}
+{% for key, val in item.php_flag.items() %}
+php_flag[{{ key }}] = {{ val }}
+{% endfor %}
+{% endif %}
+
+{% if item.php_value is defined %}
+{% for key, val in item.php_value.items() %}
+php_value[{{ key }}] = {{ val }}
+{% endfor %}
+{% endif %}
+
+{% if item.php_admin_flag is defined %}
+{% for key, val in item.php_admin_flag.items() %}
+php_admin_flag[{{ key }}] = {{ val }}
+{% endfor %}
+{% endif %}
+
+{% if item.php_admin_value is defined %}
+{% for key, val in item.php_admin_value.items() %}
+php_admin_value[{{ key }}] = {{ val }}
+{% endfor %}
+{% endif %}
