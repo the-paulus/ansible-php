@@ -131,7 +131,7 @@ _php_fpm_conf_path:
   CentOS: "/etc/php-fpm.d"
   Debian: ""
   Gentoo: ""
-  Redhat: "/etc/php-fpm.d"
+  RedHat: "/etc/php-fpm.d"
 
 _php_fpm_pool_user_group:
   CentOS: "apache"
