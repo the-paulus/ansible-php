@@ -1,7 +1,7 @@
 ---
 php_repository: "remi"
 php_version: "7.0"
-php_webserver: yes
+php_webserver: no
 php_install_recommended: yes
 php_executable: php
 php_packages: "{{ _php_packages[ansible_os_family] }}"
