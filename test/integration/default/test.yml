@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  roles:
+    - { role: the-paulus.redhat-subscription, when: ansible_distribution == 'RedHat' }
+    - the-paulus.extra-repositories
+    - apache
+    - php
+  pre_tasks:
+    - name: "Create PHP-FPM Groups"
+      group:
+        name: "{{ item.general.group }}"
+      with_items: "{{ php_php_fpm_pools }}"
+      when: item.general.group != "apache"
+
+    - name: "Create PHP-FPM Users"
+      user:
+        name: "{{ item.general.user }}"
+        group: "{{ item.general.group }}"
+        shell: "/bin/nologin"
+      with_items: "{{ php_php_fpm_pools }}"
+      when: item.general.user != "apache"
